@@ -5,18 +5,20 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Image,
+  StyleSheet,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { fetchCategories } from "../api/api";
 import { FlatList } from "react-native-gesture-handler";
 
-export type Category ={
-  idCategory:string,
-  strCategory:string;
-  strCategoryThumb:string;
-  strCategoryDescription:string;
+export type Category = {
+  idCategory: string,
+  strCategory: string;
+  strCategoryThumb: string;
+  strCategoryDescription: string;
 }
+
 const HomeScreen = () => {
   const navigation = useNavigation<any>();
   const [categories, setCategories] = useState<Category[]>([]);
@@ -36,17 +38,8 @@ const HomeScreen = () => {
   }
 
   return (
-    <View>
-      <Text
-        style={{
-          fontSize: 24,
-          fontWeight: "bold",
-          textAlign: "center",
-          margin: 10,
-        }}
-      >
-        Categories
-      </Text>
+    <View style={styles.container}>
+      <Text style={styles.titleText}>Categories</Text>
       <FlatList
         data={categories}
         keyExtractor={(item) => item.idCategory}
@@ -58,28 +51,64 @@ const HomeScreen = () => {
               })
             }
           >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                padding: 10,
-              }}
-            >
+            <View style={styles.itemContainer}>
               <Image
                 source={{ uri: item.strCategoryThumb }}
-                style={{ width: 42, height: 42, margin: 10 }}
+                style={styles.image}
               />
-              <Text>{item.strCategory}</Text>
+              <Text style={styles.categoryText}>{item.strCategory}</Text>
             </View>
           </TouchableOpacity>
         )}
-      ></FlatList>
-      <Button
-        title="Meal Details"
-        onPress={() => navigation.navigate("Detail", { mealId: "1231" })}
+        style={styles.flatList}
       />
     </View>
   );
 };
 
 export default HomeScreen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff0bf',
+    padding: 10,
+  },
+  titleText: {
+    fontSize: 28,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginVertical: 20,
+    color: '#FF7F50',
+  },
+  flatList: {
+    marginBottom: 20,
+  },
+  itemContainer: {
+    backgroundColor: '#fff8df',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 15,
+  },
+  image: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 15,
+  },
+  categoryText: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: '#FF7F50',
+  },
+});
