@@ -7,8 +7,15 @@ import SearchScreen from "../screens/SearchScreen";
 import LikeScreen from "../screens/LikesScreen";
 import CategoryMealsScreen from "../screens/CategoryMealsScreen";
 
+export type RootStackParamList = {
+  HomeMain: undefined; 
+  Detail: { mealId: string };  
+  CategoryMeals: { category: string }; 
+};
+
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
 
 const HomeStack = () => (
   <Stack.Navigator>

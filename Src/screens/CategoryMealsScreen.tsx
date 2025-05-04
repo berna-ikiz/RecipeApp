@@ -9,14 +9,16 @@ import {
 import React, { useEffect, useState } from "react";
 import { fetchMealsByCategory } from "../api/api";
 import { FlatList } from "react-native-gesture-handler";
+import {Meal} from "../types/mealTypes";
+import { RootStackParamList } from "../navigator/AppNavigator";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 
-export type Meal = {
-  strMeal: string;
-  strMealThumb: string;
-  idMeal: string;
-};
+type Props = {
+    route: RouteProp<RootStackParamList, "CategoryMeals">;
+    navigation: NavigationProp<RootStackParamList, "CategoryMeals">;
+  };
 
-const CategoryMealsScreen = ({ route, navigation }) => {
+const CategoryMealsScreen = ({ route, navigation }: Props) => {
   const { category } = route.params;
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState(true);

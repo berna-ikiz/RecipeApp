@@ -1,68 +1,18 @@
 import { View, Text, ScrollView, Image, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import { fetchMealDetail } from "../api/api";
+import {MealDetails} from "../types/mealTypes";
+import { RootStackParamList } from "../navigator/AppNavigator";
+import { RouteProp } from "@react-navigation/native";
 
-export type Meal = {
-  idMeal: string;
-  strMeal: string;
-  strMealAlternate: string | null;
-  strCategory: string;
-  strArea: string;
-  strInstructions: string;
-  strMealThumb: string;
-  strTags: string | null;
-  strYoutube: string;
-  strSource: string | null;
-  strImageSource: string | null;
-  strCreativeCommonsConfirmed: string | null;
-  dateModified: string | null;
-
-  strIngredient1?: string;
-  strIngredient2?: string;
-  strIngredient3?: string;
-  strIngredient4?: string;
-  strIngredient5?: string;
-  strIngredient6?: string;
-  strIngredient7?: string;
-  strIngredient8?: string;
-  strIngredient9?: string;
-  strIngredient10?: string;
-  strIngredient11?: string;
-  strIngredient12?: string;
-  strIngredient13?: string;
-  strIngredient14?: string;
-  strIngredient15?: string;
-  strIngredient16?: string;
-  strIngredient17?: string;
-  strIngredient18?: string;
-  strIngredient19?: string;
-  strIngredient20?: string;
-
-  strMeasure1?: string;
-  strMeasure2?: string;
-  strMeasure3?: string;
-  strMeasure4?: string;
-  strMeasure5?: string;
-  strMeasure6?: string;
-  strMeasure7?: string;
-  strMeasure8?: string;
-  strMeasure9?: string;
-  strMeasure10?: string;
-  strMeasure11?: string;
-  strMeasure12?: string;
-  strMeasure13?: string;
-  strMeasure14?: string;
-  strMeasure15?: string;
-  strMeasure16?: string;
-  strMeasure17?: string;
-  strMeasure18?: string;
-  strMeasure19?: string;
-  strMeasure20?: string;
+type DetailScreenRouteProp = RouteProp<RootStackParamList, "Detail">;
+type Props = {
+  route: DetailScreenRouteProp;
 };
 
-const DetailScreen = ({ route }) => {
+const DetailScreen = ({ route }:Props) => {
   const { mealId } = route.params;
-  const [meal, setMeal] = useState<Meal | null>(null);
+  const [meal, setMeal] = useState<MealDetails | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getMeal = async () => {
