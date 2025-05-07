@@ -11,7 +11,7 @@ export const fetchCategories = async () => {
     console.error("Categories couldn't get. Error: ", error);
   }
 };
- 
+
 export const fetchMealsByCategory = async (category: string) => {
   try {
     const response = await axios.get(`${API_URL}filter.php?c=${category}`);
@@ -33,12 +33,13 @@ export const fetchMealDetail = async (id: string) => {
   }
 };
 
-export const fetchMealsBySearch = async (query: string)=>{
-  try{
-    const response = await axios.get(`${API_URL}search.php?=s=${query}`)
-  }catch(error){
-    console.error('Searching couldn\'t ')
+export const fetchMealsBySearch = async (query: string) => {
+  try {
+    const response = await axios.get(`${API_URL}search.php?s=${query}`);
+    return response.data.meals || [];
+  } catch (error) {
+    console.error("Searching error:", error);
   }
-}
+};
 
 export default API_URL;
