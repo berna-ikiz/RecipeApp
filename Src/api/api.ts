@@ -4,7 +4,6 @@ const API_URL = "https://www.themealdb.com/api/json/v1/1/";
 
 export const fetchCategories = async () => {
   try {
-    console.log("here");
     const response = await axios.get(`${API_URL}categories.php`);
     console.log(response);
     return response.data.categories;
@@ -12,7 +11,7 @@ export const fetchCategories = async () => {
     console.error("Categories couldn't get. Error: ", error);
   }
 };
-
+ 
 export const fetchMealsByCategory = async (category: string) => {
   try {
     const response = await axios.get(`${API_URL}filter.php?c=${category}`);
@@ -33,5 +32,13 @@ export const fetchMealDetail = async (id: string) => {
     console.error("Meals data couldn't get. Error:", error);
   }
 };
+
+export const fetchMealsBySearch = async (query: string)=>{
+  try{
+    const response = await axios.get(`${API_URL}search.php?=s=${query}`)
+  }catch(error){
+    console.error('Searching couldn\'t ')
+  }
+}
 
 export default API_URL;
