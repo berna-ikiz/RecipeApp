@@ -65,7 +65,6 @@ export default DetailScreen;
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: '#fff8df',
   },
   image: {
     width: "100%",

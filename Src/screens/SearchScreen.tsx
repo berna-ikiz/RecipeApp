@@ -4,10 +4,12 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Image,
+  StyleSheet,
+  FlatList,
+  TextInput,
 } from "react-native";
 import React, { useState } from "react";
 import { Meal } from "../types/mealTypes";
-import { FlatList, TextInput } from "react-native-gesture-handler";
 import { fetchMealsBySearch } from "../api/api";
 
 const SearchScreen = ({ navigation }) => {
@@ -17,9 +19,7 @@ const SearchScreen = ({ navigation }) => {
   const [searched, setSearched] = useState(false);
 
   const searchMeals = async () => {
-    if(!query) {
-      return;
-    }
+    if (!query.trim()) return;
     setLoading(true);
     const result = await fetchMealsBySearch(query);
     setMeals(result);
@@ -28,46 +28,99 @@ const SearchScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ padding: 16 }}>
+    <View style={styles.container}>
+      <Text style={styles.title}>Search Meals</Text>
       <TextInput
         placeholder="Search meal..."
         value={query}
-        onChangeText={(text) => setQuery(text)}
+        onChangeText={setQuery}
         editable={!loading}
         onSubmitEditing={searchMeals}
-        style={{
-          borderWidth: 1,
-          borderColor: "gray",
-          borderRadius: 8,
-          padding: 16,
-          margin: 16,
-        }}
-      ></TextInput>
-      {loading && <ActivityIndicator size={"large"} color={"#FF784F"} />}
-      {!loading && searched && meals.length === 0 && (
-        <Text>No results found...</Text>
+        style={styles.input}
+      />
+
+      {loading && (
+        <ActivityIndicator style={{ marginTop: 16 }} size="large" color="#FF784F" />
       )}
+
+      {!loading && searched && meals.length === 0 && (
+        <Text style={styles.noResultsText}>No results found...</Text>
+      )}
+
       <FlatList
         data={meals}
         keyExtractor={(item) => item.idMeal}
+        contentContainerStyle={styles.resultsList}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("Detail", { mealId: item.idMeal })
-            }
+            style={styles.resultItem}
+            onPress={() => navigation.navigate("Detail", { mealId: item.idMeal })}
           >
-            <View style={{flexDirection:"row",alignItems:"center",paddingVertical:8}}>
-              <Image
-                source={{ uri: item.strMealThumb }}
-                style={{ width: 42, height: 42, marginRight: 16 }}
-              ></Image>
-              <Text>{item.strMeal}</Text>
-            </View>
+            <Image source={{ uri: item.strMealThumb }} style={styles.thumbnail} />
+            <Text style={styles.mealName}>{item.strMeal}</Text>
           </TouchableOpacity>
         )}
-      ></FlatList>
+      />
     </View>
   );
 };
 
 export default SearchScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#FF784F",
+    marginBottom: 12,
+    textAlign: "center",
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 16,
+    backgroundColor: "#fff",
+  },
+  noResultsText: {
+    textAlign: "center",
+    marginTop: 20,
+    color: "#999",
+    fontSize: 16,
+  },
+  resultsList: {
+    marginTop: 16,
+    paddingBottom: 16,
+  },
+  resultItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 2,
+  },
+  thumbnail: {
+    width: 50,
+    height: 50,
+    borderRadius: 8,
+    marginRight: 12,
+  },
+  mealName: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#333",
+  },
+});

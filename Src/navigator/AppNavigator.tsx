@@ -13,8 +13,10 @@ export type RootStackParamList = {
   HomeMain: undefined;
   Detail: { mealId: string };
   CategoryMeals: { category: string };
-  AlphabetListScreen:undefined;
-  AreaListScreen:undefined;
+  AlphabetListScreen: undefined;
+  AreaListScreen: undefined;
+  search:undefined;
+  likes:undefined;
 };
 
 const Tab = createBottomTabNavigator();
@@ -37,12 +39,12 @@ const HomeStack = () => (
       component={CategoryMealsScreen}
       options={{ title: "Recipes" }}
     />
-     <Stack.Screen
+    <Stack.Screen
       name="AlphabetListScreen"
       component={AlphabetListScreen}
       options={{ title: "Recipes" }}
     />
-     <Stack.Screen
+    <Stack.Screen
       name="AreaListScreen"
       component={AreaListScreen}
       options={{ title: "Recipes" }}
@@ -50,6 +52,30 @@ const HomeStack = () => (
   </Stack.Navigator>
 );
 
+const SearchStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="search" component={SearchScreen} />
+    <Stack.Screen
+      name="Detail"
+      component={DetailScreen}
+      options={{ title: "Meal Detail" }}
+    />
+  </Stack.Navigator>
+);
+
+
+const LikesStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="likes" component={LikeScreen} />
+    <Stack.Screen
+      name="Detail"
+      component={DetailScreen}
+      options={{ title: "Meal Detail" }}
+    />
+  </Stack.Navigator>
+);
+
+// Ana Tab Navigatör
 const AppNavigator = () => {
   return (
     <Tab.Navigator>
@@ -58,8 +84,16 @@ const AppNavigator = () => {
         component={HomeStack}
         options={{ headerShown: false }}
       />
-      <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Likes" component={LikeScreen} />
+      <Tab.Screen
+        name="Search"
+        component={SearchStack}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Likes"
+        component={LikesStack}
+        options={{ headerShown: false }}
+      />
     </Tab.Navigator>
   );
 };

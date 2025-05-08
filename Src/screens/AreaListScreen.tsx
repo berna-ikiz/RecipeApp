@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  StyleSheet,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Area, Meal } from "../types/mealTypes";
@@ -35,51 +37,138 @@ const AreaListScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View>
-      <Text>Choose Country</Text>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.heading}>Explore by Area</Text>
       <FlatList
         horizontal
-        contentContainerStyle={{ gap: 16 }}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.areaList}
         data={areas}
         keyExtractor={(item) => item.strArea}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => loadMealsByArea(item.strArea)}>
+          <TouchableOpacity
+            style={[
+              styles.areaButton,
+              selectedArea === item.strArea && styles.selectedAreaButton,
+            ]}
+            onPress={() => loadMealsByArea(item.strArea)}
+          >
             <Text
-              style={{
-                fontSize: 16,
-                color: selectedArea === item.strArea ? "gray" : "coral",
-              }}
+              style={[
+                styles.areaText,
+                selectedArea === item.strArea && styles.selectedAreaText,
+              ]}
             >
               {item.strArea}
             </Text>
           </TouchableOpacity>
         )}
       />
-      {loading && <ActivityIndicator size={"large"} color={"#FF784F"} />}
-      {!loading && meals.length === 0 && (
-        <Text>There is no meals starting with this {selectedArea}</Text>
+
+      {loading && (
+        <ActivityIndicator size="large" color="#FF784F" style={{ marginTop: 20 }} />
       )}
-      <FlatList
-        data={meals}
-        keyExtractor={(item) => item.idMeal}
-        contentContainerStyle={{ paddingTop: 8, gap: 16 }}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={{ flexDirection: "row", gap: 8, alignItems: "center" }}
-            onPress={() =>
-              navigation.navigate("Detail", { mealId: item.idMeal })
-            }
-          >
-            <Image
-              source={{ uri: item.strMealThumb }}
-              style={{ width: 50, height: 50 }}
-            ></Image>
-            <Text>{item.strMeal}</Text>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
+
+      {!loading && meals.length === 0 && (
+        <Text style={styles.emptyText}>No meals found in {selectedArea}</Text>
+      )}
+
+      {!loading && (
+        <FlatList
+          data={meals}
+          contentContainerStyle={styles.mealList}
+          keyExtractor={(item) => item.idMeal}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.mealCard}
+              onPress={() =>
+                navigation.navigate("Detail", { mealId: item.idMeal })
+              }
+            >
+              <Image
+                source={{ uri: item.strMealThumb }}
+                style={styles.mealImage}
+              />
+              <View style={styles.mealInfo}>
+                <Text style={styles.mealTitle}>{item.strMeal}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      )}
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+  },
+  heading: {
+    fontSize: 22,
+    fontWeight: "600",
+    marginBottom: 16,
+    color: "#333",
+    textAlign: "center",
+  },
+  areaList: {
+    gap: 12,
+    marginHorizontal:5
+  },
+  areaButton: {
+    backgroundColor: "coral",
+    padding:10,
+    borderRadius: 10,
+  },
+  selectedAreaButton: {
+    backgroundColor: "#444",
+  },
+  areaText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "500",
+  },
+  selectedAreaText: {
+    color: "#FFDAB9",
+  },
+  mealList: {
+    paddingTop: 10,
+    gap: 16,
+    marginHorizontal:14
+  },
+  mealCard: {
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    alignItems: "center",
+    padding: 10,
+    marginBottom: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  mealImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    marginRight: 12,
+  },
+  mealInfo: {
+    flex: 1,
+  },
+  mealTitle: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#222",
+  },
+  emptyText: {
+    textAlign: "center",
+    marginTop: 40,
+    fontSize: 16,
+    color: "#999",
+  },
+});
 
 export default AreaListScreen;

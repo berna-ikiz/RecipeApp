@@ -65,13 +65,13 @@ export default CategoryMealsScreen;
 const styles = StyleSheet.create({
   listContainer: {
     padding: 10,
-    backgroundColor: '#fff0bf',
+  
   },
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
     padding: 16,
-    backgroundColor: '#fff8df',
+    backgroundColor: 'white',
     borderRadius: 10,
     shadowColor: '#B0A990',
     shadowOffset: {

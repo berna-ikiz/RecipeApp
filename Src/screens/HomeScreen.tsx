@@ -1,23 +1,22 @@
 import {
   View,
   Text,
-  Button,
   ActivityIndicator,
   TouchableOpacity,
   Image,
   StyleSheet,
+  FlatList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { fetchCategories } from "../api/api";
-import { FlatList } from "react-native-gesture-handler";
 
 export type Category = {
-  idCategory: string,
+  idCategory: string;
   strCategory: string;
   strCategoryThumb: string;
   strCategoryDescription: string;
-}
+};
 
 const HomeScreen = () => {
   const navigation = useNavigation<any>();
@@ -34,17 +33,37 @@ const HomeScreen = () => {
   }, []);
 
   if (loading) {
-    return <ActivityIndicator size={"large"} color={"tomato"} />;
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="tomato" />
+      </View>
+    );
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>Categories</Text>
-      <Button title="Sort A–Z" onPress={()=>navigation.navigate("AlphabetListScreen")}/>
-      <Button title="By Country" onPress={()=>navigation.navigate("AreaListScreen")}/>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("AlphabetListScreen")}
+        >
+          <Text style={styles.navButtonText}>Sort A–Z</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("AreaListScreen")}
+        >
+          <Text style={styles.navButtonText}>By Country</Text>
+        </TouchableOpacity>
+      </View>
+
       <FlatList
         data={categories}
         keyExtractor={(item) => item.idCategory}
+        contentContainerStyle={styles.flatList}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() =>
@@ -62,55 +81,75 @@ const HomeScreen = () => {
             </View>
           </TouchableOpacity>
         )}
-        style={styles.flatList}
       />
     </View>
   );
 };
 
 export default HomeScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff0bf',
-    padding: 10,
+    padding: 16,
+    backgroundColor: "#FAFAFA",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FAFAFA",
   },
   titleText: {
     fontSize: 28,
     fontWeight: "bold",
     textAlign: "center",
-    marginVertical: 20,
-    color: '#FF7F50',
+    marginBottom: 16,
+    color: "#FF7F50",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginBottom: 16,
+  },
+  navButton: {
+    backgroundColor: "#FF7F50",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    width:"35%"
+  },
+  navButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "600",
   },
   flatList: {
-    marginBottom: 20,
+    paddingBottom: 16,
   },
   itemContainer: {
-    backgroundColor: '#fff8df',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
+    backgroundColor: "#fff",
+    borderRadius: 12,
     marginVertical: 8,
-    marginHorizontal: 16,
+    marginHorizontal: 8,
+    padding: 12,
     flexDirection: "row",
     alignItems: "center",
-    padding: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   image: {
     width: 60,
     height: 60,
-    borderRadius: 30,
-    marginRight: 15,
+    borderRadius: 8,
+    marginRight: 12,
   },
   categoryText: {
     fontSize: 18,
-    fontWeight: "600",
-    color: '#FF7F50',
+    fontWeight: "500",
+    color: "#333",
   },
 });
