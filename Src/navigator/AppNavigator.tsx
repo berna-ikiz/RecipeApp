@@ -6,16 +6,19 @@ import DetailScreen from "../screens/DetailScreen";
 import SearchScreen from "../screens/SearchScreen";
 import LikeScreen from "../screens/LikesScreen";
 import CategoryMealsScreen from "../screens/CategoryMealsScreen";
+import AlphabetListScreen from "../screens/AlphabetListScreen";
+import AreaListScreen from "../screens/AreaListScreen";
 
 export type RootStackParamList = {
-  HomeMain: undefined; 
-  Detail: { mealId: string };  
-  CategoryMeals: { category: string }; 
+  HomeMain: undefined;
+  Detail: { mealId: string };
+  CategoryMeals: { category: string };
+  AlphabetListScreen:undefined;
+  AreaListScreen:undefined;
 };
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
-
 
 const HomeStack = () => (
   <Stack.Navigator>
@@ -23,17 +26,27 @@ const HomeStack = () => (
       name="HomeMain"
       component={HomeScreen}
       options={{ title: "Home" }}
-    ></Stack.Screen>
+    />
     <Stack.Screen
       name="Detail"
       component={DetailScreen}
       options={{ title: "Meal Detail" }}
-    ></Stack.Screen>
-      <Stack.Screen
+    />
+    <Stack.Screen
       name="CategoryMeals"
       component={CategoryMealsScreen}
       options={{ title: "Recipes" }}
-    ></Stack.Screen>
+    />
+     <Stack.Screen
+      name="AlphabetListScreen"
+      component={AlphabetListScreen}
+      options={{ title: "Recipes" }}
+    />
+     <Stack.Screen
+      name="AreaListScreen"
+      component={AreaListScreen}
+      options={{ title: "Recipes" }}
+    />
   </Stack.Navigator>
 );
 

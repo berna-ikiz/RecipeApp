@@ -61,3 +61,7 @@ export type Meal = {
   strMealThumb: string;
   idMeal: string;
 };
+
+export type Area = {
+  strArea: string;
+};

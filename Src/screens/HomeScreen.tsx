@@ -40,6 +40,8 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>Categories</Text>
+      <Button title="Sort A–Z" onPress={()=>navigation.navigate("AlphabetListScreen")}/>
+      <Button title="By Country" onPress={()=>navigation.navigate("AreaListScreen")}/>
       <FlatList
         data={categories}
         keyExtractor={(item) => item.idCategory}
