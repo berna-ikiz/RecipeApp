@@ -5,7 +5,6 @@ const API_URL = "https://www.themealdb.com/api/json/v1/1/";
 export const fetchCategories = async () => {
   try {
     const response = await axios.get(`${API_URL}categories.php`);
-    console.log(response);
     return response.data.categories;
   } catch (error) {
     console.error("Categories couldn't get. Error: ", error);
@@ -48,7 +47,7 @@ export const fetchAllMealsByFirstLetter = async (letter: string) => {
     const response = await axios.get(`${API_URL}search.php?f=${letter}`);
     return response.data.meals || [];
   } catch (error) {
-    console.log(`${letter} there is no meals.`, error);
+    console.error(`${letter} there is no meals.`, error);
     return [];
   }
 };
@@ -57,7 +56,7 @@ export const fetchAreas = async () => {
     const response = await axios.get(`${API_URL}list.php?a=list`);
     return response.data.meals || [];
   } catch (error) {
-    console.log("There is no areas.", error);
+    console.error("There is no areas.", error);
     return [];
   }
 };
@@ -67,7 +66,7 @@ export const fetchMealsByAreas = async (area:string) => {
     const response = await axios.get(`${API_URL}filter.php?a=${area}`);
     return response.data.meals || [];
   } catch (error) {
-    console.log("There is no meals on this area.", error);
+    console.error("There is no meals on this area.", error);
     return [];
   }
 };

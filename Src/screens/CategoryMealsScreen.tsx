@@ -27,7 +27,6 @@ const CategoryMealsScreen = ({ route, navigation }: Props) => {
     const getMeals = async () => {
       const data = await fetchMealsByCategory(category);
       setMeals(data);
-      console.log(JSON.stringify(data, null, 2));
       setLoading(false);
     };
     getMeals();

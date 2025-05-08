@@ -17,12 +17,10 @@ const DetailScreen = ({ route }: Props) => {
   const [loading, setLoading] = useState(true);
   const {favourites,addFavourite,removeFavourite} = useFavourites();
   const isFavourite = favourites.some(item=> item.idMeal === meal?.idMeal);
-  console.log(isFavourite)
+  
   useEffect(() => {
     const getMeal = async () => {
-      console.log('here')
       const data = await fetchMealDetail(mealId);
-      console.log(JSON.stringify(data, null, 2));
       setMeal(data);
       setLoading(false);
     };

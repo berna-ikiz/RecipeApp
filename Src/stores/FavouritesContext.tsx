@@ -1,4 +1,12 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { doc, setDoc, getDoc, collection } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
 
 export type Meal = {
   idMeal: string;
@@ -16,13 +24,30 @@ const FavouritesContext = createContext<FavouritesContextType | undefined>(
 
 export const FavouritesProvider = ({ children }: { children: ReactNode }) => {
   const [favourites, setFavourites] = useState<Meal[]>([]);
-  const addFavourite = (meal: Meal) => {
+
+  const loadFavouritesFromFireStore = async (): Promise<Meal[]> => {
+    const docSnap = await getDoc(doc(db, "favourites"));
+    return docSnap.exists() ? docSnap.data().favourites : [];
+  };
+
+  const saveFavouritesToFireStore = async (favourites: Meal[]) => {
+    await setDoc(doc(collection(db, "favourites")), { favourites });
+  };
+  const addFavourite = async (meal: Meal) => {
     setFavourites((prev) => [...prev, meal]);
   };
 
   const removeFavourite = (id: string) => {
     setFavourites((prev) => prev.filter((meal) => meal.idMeal !== id));
   };
+
+  useEffect(() => {
+    loadFavouritesFromFireStore().then((data) => setFavourites(data));
+  }, []);
+
+  useEffect(() => {
+    saveFavouritesToFireStore(favourites);
+  }, [favourites]);
 
   return (
     <FavouritesContext.Provider
