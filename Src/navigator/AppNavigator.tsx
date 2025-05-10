@@ -75,7 +75,7 @@ const LikesStack = () => (
   </Stack.Navigator>
 );
 
-// Ana Tab Navigatör
+
 const AppNavigator = () => {
   return (
     <Tab.Navigator>
